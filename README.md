@@ -1,2 +1,30 @@
-# movies-explorer-api
-auth-api for movie catalogue app
+# Проект Каталог фильмов
+
+## Описание
+
+Веб приложение - картотека фильмов на `React` и `NodeJS`.
+В качестве базы данных используется `MongoDB` с `mongoose`.
+В разработке использовался `ESLint` со стайлгайдом от Airbnb и `editorconfig`.
+
+Также используются:
+`helmet` - для простановки security-заголовков.
+`express-rate-limit` - для ограничения кол-во запросов и защиты от DoS-атак.
+
+## Директории
+
+`/routes` — папка с файлами роутера  
+`/controllers` — папка с файлами контроллеров пользователя и карточки  
+`/models` — папка с файлами описания схем пользователя и карточки
+`/erros` — папка с файлами кастомных ошибок
+
+## Запуск проекта
+
+`npm run start` — запускает сервер  
+`npm run dev` — запускает сервер с hot-reload
+
+## Публичный IP-адрес сервера и домен
+
+https://morgankatarn.nomoredomains.sbs/ - фронтенд  
+https://api.morgankatarn.nomoredomains.sbs/signin - сервер
+
+51.250.78.39 - ip
