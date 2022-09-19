@@ -22,9 +22,19 @@
 `npm run start` — запускает сервер  
 `npm run dev` — запускает сервер с hot-reload
 
+## Эндпоинты
+
+_GET_ `/users/me` — возвращает информацию о пользователе (email и имя);  
+_PATCH_ `/users/me` — обновляет информацию о пользователе;  
+_GET_ `/movies` — все сохранённые пользователем фильмы;  
+_POST_ `/movies` — создаёт фильм с переданными в теле данными;  
+_DELETE_ `/movies/:movieId` — удаляет сохранённый фильм по \_id;
+
+_POST_ `/signup` — создаёт пользователя с переданными в теле данными;  
+_POST_ `/signin` — возвращает JWT, если в теле запроса переданы правильные почта и пароль.
+
 ## Публичный IP-адрес сервера и домен
 
-https://morgankatarn.nomoredomains.sbs/ - фронтенд  
-https://api.morgankatarn.nomoredomains.sbs/signin - сервер
+https://api.movies-explorer.nomoredomains.sbs/ - сервер
 
-51.250.78.39 - ip
+51.250.75.99 - ip
