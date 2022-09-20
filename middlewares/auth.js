@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
       NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
     );
   } catch (err) {
-    return next(new AuthorizationError('Неправильные почта или пароль'));
+    return next(new AuthorizationError('Необходима авторизация'));
   }
   req.user = payload;
   return next();

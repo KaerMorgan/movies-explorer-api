@@ -17,13 +17,12 @@ module.exports.saveMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
     movieId,
   } = req.body;
-  const { _id } = req.user;
   Movie.create({
     country,
     director,
@@ -31,12 +30,12 @@ module.exports.saveMovie = (req, res, next) => {
     year,
     description,
     image,
-    trailer,
+    trailerLink,
     nameRU,
     nameEN,
     thumbnail,
     movieId,
-    owner: _id,
+    owner: req.user._id,
   })
     .then((movie) => res.send(movie))
     .catch((err) => {
@@ -52,12 +51,18 @@ module.exports.saveMovie = (req, res, next) => {
 module.exports.removeMovie = (req, res, next) => {
   const id = req.params.movieId;
   Movie.findById(id)
-    .orFail(() => next(new NotFoundError('Фильм не найден')))
+    .orFail(new NotFoundError('Фильм не найден'))
     .then((movie) => {
       if (!movie.owner.equals(req.user._id)) {
         return next(new ForbiddenError('Вы не можете удалить чужой фильм'));
       }
       return Movie.findByIdAndRemove(id).then((removedFilm) => res.send(removedFilm));
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Неверный идентификатор фильм'));
+      } else {
+        next(err);
+      }
+    });
 };

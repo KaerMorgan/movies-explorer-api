@@ -17,22 +17,16 @@ const loginValidation = celebrate({
   }),
 });
 
-const avatarValidation = celebrate({
-  body: Joi.object().keys({
-    avatar: Joi.string().pattern(urlRegExp),
-  }),
-});
-
 const movieValidation = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required(),
     director: Joi.string().required(),
-    duration: Joi.string().required(),
+    duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().pattern(urlRegExp),
-    trailer: Joi.string().pattern(urlRegExp),
-    thumbnail: Joi.string().pattern(urlRegExp),
+    image: Joi.string().required().pattern(urlRegExp),
+    trailerLink: Joi.string().required().pattern(urlRegExp),
+    thumbnail: Joi.string().required().pattern(urlRegExp),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),
     movieId: Joi.number().required(),
@@ -41,14 +35,8 @@ const movieValidation = celebrate({
 
 const userInfoValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-  }),
-});
-
-const userIdValidation = celebrate({
-  params: Joi.object().keys({
-    userId: Joi.string().length(24).hex().required(),
+    name: Joi.string().required().min(2).max(30),
+    email: Joi.string().email().required(),
   }),
 });
 
@@ -61,9 +49,7 @@ const movieIdValidation = celebrate({
 module.exports = {
   registrationValidation,
   loginValidation,
-  avatarValidation,
   movieValidation,
   userInfoValidation,
-  userIdValidation,
   movieIdValidation,
 };

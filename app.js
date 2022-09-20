@@ -1,10 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -17,6 +18,8 @@ const limiter = rateLimit({
 });
 
 const { PORT = 3000 } = process.env;
+const { DATABASE_ADDRESS, NODE_ENV } = process.env;
+
 const app = express();
 
 app.use(requestLogger);
@@ -33,17 +36,21 @@ app.use(errors()); // обработчик ошибок celebrate
 app.use(errorHandler);
 
 async function main() {
-  await mongoose.connect(
-    'mongodb://localhost:27017/bitfilmsdb',
-    { useNewUrlParser: true },
-    (err) => {
-      if (err) console.log(err.name, err.message);
-      console.log('Connected to MongoDB');
-    },
-  );
-  await app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-  });
+  try {
+    await mongoose.connect(
+      NODE_ENV === 'production'
+        ? DATABASE_ADDRESS
+        : 'mongodb://localhost:27017/bitfilmsdb',
+      {
+        useNewUrlParser: true,
+      },
+    );
+    await app.listen(PORT);
+
+    console.log(`Connected to MongoDB. App listening on port ${PORT}`);
+  } catch (error) {
+    console.log(error.name, error.message);
+  }
 }
 
 main();

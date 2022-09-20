@@ -9,19 +9,20 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getMe = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(() => next(new NotFoundError('Пользователь не найден')))
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => res.send(user))
     .catch(next);
 };
 
 module.exports.changeUserInfo = (req, res, next) => {
-  const { name, about } = req.body;
+  const { name, email } = req.body;
   const { _id } = req.user;
   User.findByIdAndUpdate(
     _id,
-    { name, about },
+    { name, email },
     { new: true, runValidators: true },
   )
+    .orFail(new NotFoundError('Пользователь не найден'))
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
