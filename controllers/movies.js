@@ -4,7 +4,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.getAllSavedMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movies) => res.send(movies))
     .catch(next);
 };
@@ -56,7 +57,9 @@ module.exports.removeMovie = (req, res, next) => {
       if (!movie.owner.equals(req.user._id)) {
         return next(new ForbiddenError('Вы не можете удалить чужой фильм'));
       }
-      return Movie.findByIdAndRemove(id).then((removedFilm) => res.send(removedFilm));
+      return Movie.findByIdAndRemove(id).then((removedFilm) =>
+        res.send(removedFilm),
+      );
     })
     .catch((err) => {
       if (err.name === 'CastError') {

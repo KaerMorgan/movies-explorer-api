@@ -54,3 +54,9 @@ async function main() {
 }
 
 main();
+
+// В дотэнв:
+// NODE_ENV=production
+// JWT_SECRET=9fc851ba21be6ff3431071ff663c2d9d4528a6aa29815e26a5352d0e55a04ffe
+// DATABASE_ADDRESS=mongodb://localhost:27017/moviesdb
+// PORT=3000
